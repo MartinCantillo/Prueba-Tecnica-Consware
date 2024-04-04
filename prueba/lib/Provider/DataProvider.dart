@@ -10,7 +10,7 @@ class DataProvider {
   static Future<List<Data>> GetData() async {
     try {
       final response = await http.get(Uri.parse(endpoint));
-      
+      print(response.body);
       if (response.statusCode == 200) {
         //Decodifico los datos de la api y los preparo a json
         final List<dynamic> LData = jsonDecode(response.body)["results"];

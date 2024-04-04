@@ -1,5 +1,31 @@
 import 'dart:convert';
 
+class Episodio {
+  String? name;
+  String? air_date;
+  String? episode;
+  Episodio({
+    this.name,
+    this.air_date,
+    this.episode,
+  });
+
+  //Descerializacion de datos de la api
+  factory Episodio.fromJson(Map<String, dynamic> json) => Episodio(
+        name: json["name"] ?? "",
+        air_date: json["air_date"] ?? "",
+        episode: json["episode"] ?? "",
+      );
+      Map<String, dynamic> toJson() {
+    return {
+      'name': name,
+      'air_date': air_date,
+      'episode': episode,
+    };
+  }
+
+}
+
 class Data {
   String? name;
   String? status;
@@ -8,6 +34,7 @@ class Data {
   String? origen;
   String? location;
   String image;
+  List<Episodio>? episodes; // Lista de episodios
   Data({
     this.name,
     this.status,
@@ -16,9 +43,10 @@ class Data {
     this.origen,
     this.location,
     required this.image,
+    this.episodes, // Incluye la lista de episodios en el constructor
   });
 
-//Descerializacion de datos de la api
+  //Descerializacion de datos de la api
   factory Data.fromJson(Map<String, dynamic> json) => Data(
         name: json["name"] ?? "",
         status: json["status"] ?? "",
@@ -26,7 +54,11 @@ class Data {
         type: json["type"],
         origen: json["origin"]["name"],
         location: json["location"]["name"],
-        image:json["image"]
+        image: json["image"],
+        episodes: json["episodes"] != null
+            ? List<Episodio>.from(
+                json["episodes"].map((x) => Episodio.fromJson(x)))
+            : [], // Mapea la lista de episodios desde JSON si existe
       );
 
   //Serializacion
@@ -39,6 +71,9 @@ class Data {
       'type': type,
       'origen': origen,
       'location': location,
+      'episodes': episodes != null
+          ? episodes!.map((episodio) => episodio.toJson()).toList()
+          : [], // Convierte la lista de episodios a JSON si existe
     };
   }
 

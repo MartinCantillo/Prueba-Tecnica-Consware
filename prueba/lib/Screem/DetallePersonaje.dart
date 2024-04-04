@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:prueba/Models/Data.dart';
+import 'package:prueba/Screem/EpisodeListPage%20.dart';
 
 class CharacterDetailPage extends StatelessWidget {
   final Data gif;
@@ -35,13 +36,25 @@ class CharacterDetailPage extends StatelessWidget {
               'Especie: ${gif.species}',
               style: TextStyle(fontSize: 16),
             ),
-             Text(
+            Text(
               'Origen: ${gif.origen}',
               style: TextStyle(fontSize: 16),
             ),
             Text(
               'Ubicacion: ${gif.location}',
               style: TextStyle(fontSize: 16),
+            ),
+            SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => EpisodeListPage(episodes: gif.episodes),
+                  ),
+                );
+              },
+              child: Text('Ver Episodios'),
             ),
           ],
         ),
