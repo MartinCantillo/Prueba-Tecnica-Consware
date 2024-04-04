@@ -4,4 +4,3 @@ import 'package:prueba/Widgets/MyApp.dart';
 void main() {
   runApp(const MyApp());
 }
-

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:prueba/Models/Data.dart';
 import 'package:prueba/Models/Episodio.dart';
 import 'package:prueba/Provider/EpisodiosProvider.dart';
 
@@ -13,16 +12,15 @@ class EpisodeListPage extends StatefulWidget {
 }
 
 class _EpisodeListPageState extends State<EpisodeListPage> {
-  late Future<List<Episodio>> gifsList;
+  late Future<List<Episodio>> episodesList;
   late ScrollController _scrollController;
-  List<Episodio> _gifs = [];
-  List<Data> _filteredGifs = [];
+  List<Episodio> _episodes = [];
   bool _isLoading = false;
 
   @override
   void initState() {
     super.initState();
-    gifsList = EpisodiosProvider.GetDataE();
+    episodesList = EpisodiosProvider.GetDataE();
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
   }
@@ -39,24 +37,24 @@ class _EpisodeListPageState extends State<EpisodeListPage> {
         !_scrollController.position.outOfRange) {
       // Si no está cargando más datos actualmente, cargar más
       if (!_isLoading) {
-        _loadMoreGifs();
+        _loadMoreEpisodes();
       }
     }
   }
 
-  Future<void> _loadMoreGifs() async {
+  Future<void> _loadMoreEpisodes() async {
     setState(() {
       _isLoading = true;
     });
 
     try {
-      final additionalGifs = await EpisodiosProvider.GetDataE();
+      final additionalEpisodes = await EpisodiosProvider.GetDataE();
       setState(() {
-        _gifs.addAll(additionalGifs);
+        _episodes.addAll(additionalEpisodes);
         _isLoading = false;
       });
     } catch (e) {
-      print('Error loading more gifs: $e');
+      print('Error loading more episodes: $e');
       setState(() {
         _isLoading = false;
       });
@@ -76,7 +74,7 @@ class _EpisodeListPageState extends State<EpisodeListPage> {
           backgroundColor: Colors.black,
         ),
         body: FutureBuilder(
-          future: gifsList,
+          future: episodesList,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(
@@ -90,20 +88,19 @@ class _EpisodeListPageState extends State<EpisodeListPage> {
                 ),
               );
             } else {
-              _gifs = snapshot.data as List<Episodio>;
+              _episodes = snapshot.data as List<Episodio>;
               return GridView.builder(
                 controller: _scrollController,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisSpacing: 1,
                   mainAxisSpacing: 2,
-                  crossAxisCount: 2,
+                  crossAxisCount: MediaQuery.of(context).size.width > 600 ? 4 : 2,
                 ),
-                itemCount: _gifs.length + (_isLoading ? 1 : 0),
+                itemCount: _episodes.length + (_isLoading ? 1 : 0),
                 itemBuilder: (context, index) {
-                  if (index < _gifs.length) {
-                    // Descompongo el atributo episode en temporada y número del episodio
-                    final episodeParts = _gifs[index].episode!.split('E');
-                    final season = episodeParts[0].substring(1); // Elimino el 'S' inicial
+                  if (index < _episodes.length) {
+                    final episodeParts = _episodes[index].episode!.split('E');
+                    final season = episodeParts[0].substring(1);
                     final episodeNumber = episodeParts[1];
 
                     return Card(
@@ -114,7 +111,7 @@ class _EpisodeListPageState extends State<EpisodeListPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Nombre: ${_gifs[index].name}',
+                              'Nombre: ${_episodes[index].name}',
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
@@ -123,7 +120,7 @@ class _EpisodeListPageState extends State<EpisodeListPage> {
                             ),
                             SizedBox(height: 8),
                             Text(
-                              'Air date: ${_gifs[index].air_date}',
+                              'Air date: ${_episodes[index].air_date}',
                               style: TextStyle(
                                 fontSize: 14,
                                 color: Colors.white,
@@ -151,8 +148,8 @@ class _EpisodeListPageState extends State<EpisodeListPage> {
                     );
                   } else {
                     return _isLoading
-                        ? const Padding(
-                            padding: EdgeInsets.all(8.0),
+                        ? Padding(
+                            padding: const EdgeInsets.all(8.0),
                             child: Center(
                               child: CircularProgressIndicator(),
                             ),

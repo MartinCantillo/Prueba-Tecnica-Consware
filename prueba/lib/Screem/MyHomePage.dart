@@ -102,111 +102,116 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             Expanded(
-              child: FutureBuilder(
-                future: gifsList,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  } else if (snapshot.hasError) {
-                    return Center(
-                      child: Text('Error: ${snapshot.error}'),
-                    );
-                  } else {
-                    _gifs = snapshot.data as List<Data>;
-                    return GridView.builder(
-                      controller: _scrollController,
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisSpacing: 1,
-                        mainAxisSpacing: 2,
-                        crossAxisCount: 2,
-                      ),
-                      itemCount: _filteredGifs.isNotEmpty
-                          ? _filteredGifs.length + (_isLoading ? 1 : 0)
-                          : _gifs.length + (_isLoading ? 1 : 0),
-                      itemBuilder: (context, index) {
-                        final gif = _filteredGifs.isNotEmpty
-                            ? _filteredGifs[index]
-                            : _gifs[index];
-                        if (index < _filteredGifs.length ||
-                            index < _gifs.length) {
-                          return GestureDetector(
-                            onTap: () {
-                              // Navegar a la pantalla de detalle del personaje
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      CharacterDetailPage(gif: gif),
+              child: LayoutBuilder(
+                builder: (BuildContext context, BoxConstraints constraints) {
+                  return FutureBuilder(
+                    future: gifsList,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      } else if (snapshot.hasError) {
+                        return Center(
+                          child: Text('Error: ${snapshot.error}'),
+                        );
+                      } else {
+                        _gifs = snapshot.data as List<Data>;
+                        return GridView.builder(
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount:
+                                constraints.maxWidth > 600 ? 4 : 2,
+                            crossAxisSpacing: 1,
+                            mainAxisSpacing: 2,
+                          ),
+                          itemCount: _filteredGifs.isNotEmpty
+                              ? _filteredGifs.length + (_isLoading ? 1 : 0)
+                              : _gifs.length + (_isLoading ? 1 : 0),
+                          itemBuilder: (context, index) {
+                            final gif = _filteredGifs.isNotEmpty
+                                ? _filteredGifs[index]
+                                : _gifs[index];
+                            if (index < _filteredGifs.length ||
+                                index < _gifs.length) {
+                              return GestureDetector(
+                                onTap: () {
+                                  // Navegar a la pantalla de detalle del personaje
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          CharacterDetailPage(gif: gif),
+                                    ),
+                                  );
+                                },
+                                child: Card(
+                                  color: Colors.black,
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: SizedBox(
+                                          width: 100,
+                                          height: 200,
+                                          child: Column(
+                                            children: [
+                                              const SizedBox(height: 8),
+                                              Image.network(
+                                                gif.image,
+                                                fit: BoxFit.cover,
+                                                height: 170,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                'Nombre: ${gif.name}',
+                                                style: TextStyle(
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.white),
+                                              ),
+                                              SizedBox(height: 8),
+                                              Text(
+                                                'Estado: ${gif.status}',
+                                                style: TextStyle(
+                                                    fontSize: 14,
+                                                    color: Colors.white),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               );
-                            },
-                            child: Card(
-                              color: Colors.black,
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: SizedBox(
-                                      width: 100,
-                                      height: 200,
-                                      child: Column(
-                                        children: [
-                                          const SizedBox(height: 8),
-                                          Image.network(
-                                            gif.image,
-                                            fit: BoxFit.cover,
-                                            height: 170,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: Padding(
+                            } else {
+                              return _isLoading
+                                  ? Padding(
                                       padding: const EdgeInsets.all(8.0),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            'Nombre: ${gif.name}',
-                                            style: TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.white),
-                                          ),
-                                          SizedBox(height: 8),
-                                          Text(
-                                            'Estado: ${gif.status}',
-                                            style: TextStyle(
-                                                fontSize: 14,
-                                                color: Colors.white),
-                                          ),
-                                        ],
+                                      child: Center(
+                                        child: CircularProgressIndicator(),
                                       ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          );
-                        } else {
-                          return _isLoading
-                              ? Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Center(
-                                    child: CircularProgressIndicator(),
-                                  ),
-                                )
-                              : Container();
-                        }
-                      },
-                    );
-                  }
+                                    )
+                                  : Container();
+                            }
+                          },
+                        );
+                      }
+                    },
+                  );
                 },
               ),
             ),
