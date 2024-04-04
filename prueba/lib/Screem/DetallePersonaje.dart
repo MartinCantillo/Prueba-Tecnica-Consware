@@ -14,7 +14,7 @@ class CharacterDetailPage extends StatelessWidget {
       appBar: AppBar(
         title: Text('Detalles del Personaje'),
       ),
-      body: SingleChildScrollView(
+      body: SingleChildScrollView(//aqui para que el contenido sea desplazable en toda la pantalla 
         child: Center(
           child: Padding(
             padding: EdgeInsets.all(16.0),

@@ -9,6 +9,8 @@ class MyHomePage extends StatefulWidget {
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
+//LayoutBuilder para determinar el ancho
+//config para el ancho de la pantalla constraints.maxWidth
 
 class _MyHomePageState extends State<MyHomePage> {
   late Future<List<Data>> gifsList;
@@ -120,8 +122,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         return GridView.builder(
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount:
-                                constraints.maxWidth > 600 ? 4 : 2,
+                            crossAxisCount: constraints.maxWidth > 600 ? 4 : 2,
                             crossAxisSpacing: 1,
                             mainAxisSpacing: 2,
                           ),

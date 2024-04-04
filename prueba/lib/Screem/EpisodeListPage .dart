@@ -94,7 +94,7 @@ class _EpisodeListPageState extends State<EpisodeListPage> {
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisSpacing: 1,
                   mainAxisSpacing: 2,
-                  crossAxisCount: MediaQuery.of(context).size.width > 600 ? 4 : 2,
+                  crossAxisCount: MediaQuery.of(context).size.width > 600 ? 4 : 2,//aqui es para que se adapte a la pantalla
                 ),
                 itemCount: _episodes.length + (_isLoading ? 1 : 0),
                 itemBuilder: (context, index) {
