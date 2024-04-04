@@ -131,7 +131,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     'Nombre: ${_gifs[index].name}',
                                     style: TextStyle(
                                         fontSize: 16,
-                                        fontWeight: FontWeight,
+                                        fontWeight: FontWeight.bold,
                                         color: Colors.white),
                                   ),
                                   SizedBox(height: 8),
