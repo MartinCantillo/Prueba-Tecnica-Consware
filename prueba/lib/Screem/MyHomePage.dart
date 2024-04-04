@@ -62,16 +62,16 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-        child: Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          "The Rick and Morty API",
-          style: TextStyle(color: Colors.black),
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text(
+            "The Rick and Morty API",
+            style: TextStyle(color: Colors.white),
+          ),
+          centerTitle: true,
+          backgroundColor: Colors.black,
         ),
-        centerTitle: true,
-        backgroundColor: Colors.white,
-      ),
-       body: FutureBuilder(
+        body: FutureBuilder(
           future: gifsList,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
@@ -95,9 +95,57 @@ class _MyHomePageState extends State<MyHomePage> {
                 itemBuilder: (context, index) {
                   if (index < _gifs.length) {
                     return Card(
-                      child: Image.network(
-                        _gifs[index].image,
-                        fit: BoxFit.fill,
+                      color: Colors.black, 
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: SizedBox(
+                              width: 100, 
+                              height:
+                                  200, 
+                              child: Column(
+                                children: [
+                                  const SizedBox(
+                                      height:
+                                          8), 
+                                  Image.network(
+                                    _gifs[index].image,
+                                    fit: BoxFit
+                                        .cover, 
+                                        height: 170,
+                                       // width: 2270,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Nombre: ${_gifs[index].name}',
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight,
+                                        color: Colors.white),
+                                  ),
+                                  SizedBox(height: 8),
+                                  Text(
+                                    'Estado: ${_gifs[index].status}',
+                                    style: TextStyle(
+                                        fontSize: 14, color: Colors.white),
+                                  ),
+                                  // Agrega más widgets aquí para mostrar más información
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     );
                   } else {
