@@ -7,6 +7,7 @@ class Data {
   String? type;
   String? origen;
   String? location;
+  String image;
   Data({
     this.name,
     this.status,
@@ -14,6 +15,7 @@ class Data {
     this.type,
     this.origen,
     this.location,
+    required this.image,
   });
 
 //Descerializacion de datos de la api
@@ -24,6 +26,7 @@ class Data {
         type: json["type"],
         origen: json["origin"]["name"],
         location: json["location"]["name"],
+        image:json["image"]
       );
 
   //Serializacion
