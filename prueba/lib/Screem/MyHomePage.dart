@@ -81,8 +81,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 onChanged: (value) {
                   setState(() {
                     _filteredGifs = _gifs
-                        .where((gif) =>
-                            gif.name!.toLowerCase().contains(value.toLowerCase()))
+                        .where((gif) => gif.name!
+                            .toLowerCase()
+                            .contains(value.toLowerCase()))
                         .toList();
                   });
                 },
@@ -137,7 +138,8 @@ class _MyHomePageState extends State<MyHomePage> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => CharacterDetailPage(gif: gif),
+                                  builder: (context) =>
+                                      CharacterDetailPage(gif: gif),
                                 ),
                               );
                             },
@@ -184,7 +186,6 @@ class _MyHomePageState extends State<MyHomePage> {
                                                 fontSize: 14,
                                                 color: Colors.white),
                                           ),
-                                          
                                         ],
                                       ),
                                     ),

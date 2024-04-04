@@ -3,20 +3,23 @@ import 'dart:convert';
 
 import 'package:prueba/Models/Data.dart';
 import 'package:http/http.dart' as http;
+import 'package:prueba/Models/Episodio.dart';
 
-class DataProvider {
-  static final String endpoint = "https://rickandmortyapi.com/api/character";
+class EpisodiosProvider {
+  static  String endpoint = "https://rickandmortyapi.com/api/episode/";
 
-  static Future<List<Data>> GetData() async {
+  static Future<List<Episodio>> GetDataE() async {
     try {
       final response = await http.get(Uri.parse(endpoint));
-    
+     
       if (response.statusCode == 200) {
+       
         //Decodifico los datos de la api y los preparo a json
-        final List<dynamic> LData = jsonDecode(response.body)["results"];
+        final List<dynamic> LEpisodes = jsonDecode(response.body)["results"];
+    
         //Descerializo los datos
-        List<Data> dataList =
-            LData.map((e) => Data.fromJson(e as Map<String, dynamic>)).toList();
+        List<Episodio> dataList =
+            LEpisodes.map((e) => Episodio.fromJson(e as Map<String, dynamic>)).toList();
         
         return dataList;
       } else {

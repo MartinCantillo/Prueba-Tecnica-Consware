@@ -50,7 +50,7 @@ class CharacterDetailPage extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => EpisodeListPage(episodes: gif.episodes),
+                    builder: (context) => EpisodeListPage(),
                   ),
                 );
               },
